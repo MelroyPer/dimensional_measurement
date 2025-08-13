@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Capture Image</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .left-container {
+            width: 50%;
+            padding: 20px;
+        }
+        .right-container {
+            width: 50%;
+            padding: 20px;
+            border-left: 2px solid #ccc;
+        }
+        .image-container {
+            width: 400px;
+            height: 300px;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        button, select, input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 8px 0;
+            width: 300px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: left;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left Container -->
+    <div class="left-container">
+        <h1>📏 Dimensional Measurement</h1>
+
+        <form method="post">
+            <!-- 1. Model Number -->
+            <label for="model_number">Model Number:</label><br>
+            <input type="text" name="model_number" placeholder="Model Number" value="{{ model_number or '' }}" required><br>
+
+            <!-- 2. Part Number (Dynamic Dropdown) -->
+            <label for="part_number">Part Number:</label><br>
+            <select name="part_number" id="part_number" required>
+                <option value="">-- Choose a part --</option>
+                {% for part in part_numbers %}
+                    <option value="{{ part }}" {% if part == selected_part %}selected{% endif %}>{{ part }}</option>
+                {% endfor %}
+            </select><br>
+
+            <!-- 3. Measurement Type (Static Dropdown) -->
+            <label for="measurement_type">Measurement Type:</label><br>
+            <select name="measurement_type" id="measurement_type" required>
+                <option value="">-- Choose measurement --</option>
+                <option value="buckle_length" {% if measurement_type == 'buckle_length' %}selected{% endif %}>Buckle Length</option>
+                <option value="wire_harness_length_1" {% if measurement_type == 'wire_harness_length_1' %}selected{% endif %}>Wire Harness Length</option>
+                <option value="webbing_precut_length" {% if measurement_type == 'webbing_precut_length' %}selected{% endif %}>Webbing Precut Length</option>
+                <option value="locking_bar_length" {% if measurement_type == 'locking_bar_length' %}selected{% endif %}>Locking Bar Length</option>
+                <option value="buckle_channel_width" {% if measurement_type == 'buckle_channel_width' %}selected{% endif %}>Buckle Channel Width</option>
+                <option value="riveting_height" {% if measurement_type == 'riveting_height' %}selected{% endif %}>Riveting Height</option>
+                <option value="rivet_diameter" {% if measurement_type == 'rivet_diameter' %}selected{% endif %}>Rivet Diameter</option>
+            </select><br>
+
+            <!-- 4. Image Display Area -->
+            <div class="image-container">
+                {% if measurement_exists %}
+                    <img src="{{ url_for('static', filename='greyscale.jpeg') }}" alt="Greyscale Image">
+                {% elif image_exists %}
+                    <img src="{{ url_for('static', filename='capture.jpeg') }}" alt="Captured Image">
+                {% else %}
+                    <span>No image captured yet.</span>
+                {% endif %}
+            </div>
+
+            <!-- 5. Action Buttons -->
+            {% if not image_exists %}
+                <button type="submit" name="capture">📸 Click Image</button>
+            {% elif image_exists and not measurement_exists %}
+                <button type="submit" name="measurement">📏 Measurement</button>
+            {% elif image_exists and measurement_exists %}
+                <button type="submit" name="submit">✅ Submit</button>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Right Container -->
+    <div class="right-container">
+        {% if measurement_exists %}
+            <h4>Measurement Report</h4>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Part Number</td>
+                        <td>{{ retrieved_data[0].part_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>Part Name</td>
+                        <td>{{ retrieved_data[0].part_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Customer Name</td>
+                        <td>{{ retrieved_data[0].customer_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Model Name</td>
+                        <td>{{ retrieved_data[0].model_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Type</td>
+                        <td>{{ retrieved_data[0].type }}</td>
+                    </tr>
+                    <tr>
+                        <td>EOP</td>
+                        <td>{{ retrieved_data[0].eop }}</td>
+                    </tr>
+                    <tr>
+                        <td>Drawing Number</td>
+                        <td>{{ retrieved_data[0].drawing_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>AIB Line Number</td>
+                        <td>{{ retrieved_data[0].aib_line_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>AMG Name</td>
+                        <td>{{ retrieved_data[0].amg_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Inspection Parameter</td>
+                        <td>{{ retrieved_data[0].inspection_parameter }}</td>
+                    </tr>
+                    <tr>
+                        <td>Stage</td>
+                        <td>{{ retrieved_data[0].stage }}</td>
+                    </tr>
+                    <tr>
+                        <td>Station Name</td>
+                        <td>{{ retrieved_data[0].station_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Method</td>
+                        <td>{{ retrieved_data[0].method }}</td>
+                    </tr>
+                    <tr>
+                        <td>Shift</td>
+                        <td>{{ shift_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Expected Value</td>
+                        <td>{{ retrieved_data[0].expected_value }} ± {{ retrieved_data[0].tolerance_value }}</td>
+                    </tr>
+                    <tr>
+                        <td>Actual Value</td>
+                        <td>{{ measurement_value }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- OK / NOK status -->
+            {% if is_ok %}
+                <h3 style="color: green; margin-top: 15px;">✅ Product is OK</h3>
+            {% else %}
+                <h3 style="color: red; margin-top: 15px;">❌ Product is NOK</h3>
+            {% endif %}
+
+        {% endif %}
+    </div>
+
+</body>
+</html>
