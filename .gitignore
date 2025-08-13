@@ -26,3 +26,4 @@ Thumbs.db
 static/capture.jpeg
 static/greyscale.jpeg
 data/
+transforms_img/
