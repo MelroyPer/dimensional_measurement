@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Dimensional Inspection{% endblock %}
+
+{% block content %}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6 page-header">
+                <h1>Dimensional Measurement</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Dimensional Measurement</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-7">
+                <!-- Profile Card -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <!-- Profile content goes here -->
+                         <form method="post">
+
+                            <div class="row">
+                                 <!-- 1. Model Number -->
+
+                                <div class="form-group col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <label for="model_number">Model Number:</label>
+                                    <input type="text" name="model_number" class="form-control" placeholder="Model Number" autocomplete="off" value="{{ model_number or '' }}" required>
+                                 </div>
+                                  <!-- 2. Part Number -->
+                                 <div class="form-group col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <label for="part_number">Part Number:</label>
+                                    <select name="part_number" class="form-control select2" id="part_number" required>
+                                        <option value="">-- Choose a part number--</option>
+                                        {% for part in part_numbers %}
+                                            <option value="{{ part }}" {% if part == selected_part %}selected{% endif %}>
+                                                {{ part }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                 </div>
+                                  <!-- 3. Measurement Type -->
+                                 <div class="form-group col-md-4 col-lg-4 col-sm-6 col-xs-12">
+                                    <label for="measurement_type">Measurement Number:</label>
+                                    <select name="measurement_type"  class="form-control select2" id="measurement_type" required>
+                                        <option value="">-- Choose measurement --</option>
+                                        <option value="buckle_length" {% if measurement_type == 'buckle_length' %}selected{% endif %}>Buckle Length</option>
+                                        <option value="wire_harness_length_1" {% if measurement_type == 'wire_harness_length_1' %}selected{% endif %}>Wire Harness Length</option>
+                                        <option value="webbing_precut_length" {% if measurement_type == 'webbing_precut_length' %}selected{% endif %}>Webbing Precut Length</option>
+                                        <option value="locking_bar_length" {% if measurement_type == 'locking_bar_length' %}selected{% endif %}>Locking Bar Length</option>
+                                        <option value="buckle_channel_width" {% if measurement_type == 'buckle_channel_width' %}selected{% endif %}>Buckle Channel Width</option>
+                                        <option value="riveting_height" {% if measurement_type == 'riveting_height' %}selected{% endif %}>Riveting Height</option>
+                                        <option value="rivet_diameter" {% if measurement_type == 'rivet_diameter' %}selected{% endif %}>Rivet Diameter</option>
+                                    </select>
+                                 </div>
+                            </div> 
+                            <div class="row"> 
+                            <!-- 4. Image Display Area -->
+                              <div class="form-group col-md-4 col-lg-3 col-sm-6 col-xs-12">
+                                    <div class="image-container">
+                                        {% if measurement_exists %}
+                                            <img src="{{ url_for('static', filename='greyscale.jpeg') }}" alt="Greyscale Image">
+                                        {% elif image_exists %}
+                                            <img src="{{ url_for('static', filename='capture.jpeg') }}" alt="Captured Image">
+                                        {% else %}
+                                            <span>No image captured yet.</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row"> 
+                                <div class="form-group col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                <!-- 5. Action Buttons -->
+                                    {% if not image_exists %}
+                                        <button type="submit" name="capture" class="btn btn-warning float-left">📸 Click Image</button>
+                                    {% elif image_exists and not measurement_exists %}
+                                        <button type="submit" name="measurement" class="btn btn-warning float-left">📏 Measurement</button>
+                                    {% elif image_exists and measurement_exists %}
+                                        <button type="submit" name="submit" class="btn btn-warning float-left">✅ Submit</button>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                        <button type="submit" name="capture" class="btn btn-danger float-sm-right"> <i class="fas fa-solid fa-times-circle"></i> Stop Process</button>
+                                </div>
+                            </div>
+                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-5">
+                <!-- Role Information Card -->
+                <div class="card card-warning card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Measurement Report</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Table content goes here -->
+                        {% if measurement_exists %} 
+        <table class="table table-striped table-bordered table-listNoSerachOption">
+            <thead>
+                <tr><th>Field</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Part Number</td><td>{{ retrieved_data[0].part_number }}</td></tr>
+                <tr><td>Part Name</td><td>{{ retrieved_data[0].part_name }}</td></tr>
+                <tr><td>Customer Name</td><td>{{ retrieved_data[0].customer_name }}</td></tr>
+                <tr><td>Model Name</td><td>{{ retrieved_data[0].model_name }}</td></tr>
+                <tr><td>Type</td><td>{{ retrieved_data[0].type }}</td></tr>
+                <tr><td>EOP</td><td>{{ retrieved_data[0].eop }}</td></tr>
+                <tr><td>Drawing Number</td><td>{{ retrieved_data[0].drawing_number }}</td></tr>
+                <tr><td>AIB Line Number</td><td>{{ retrieved_data[0].aib_line_number }}</td></tr>
+                <tr><td>AMG Name</td><td>{{ retrieved_data[0].amg_name }}</td></tr>
+                <tr><td>Inspection Parameter</td><td>{{ retrieved_data[0].inspection_parameter }}</td></tr>
+                <tr><td>Stage</td><td>{{ retrieved_data[0].stage }}</td></tr>
+                <tr><td>Station Name</td><td>{{ retrieved_data[0].station_name }}</td></tr>
+                <tr><td>Method</td><td>{{ retrieved_data[0].method }}</td></tr>
+                <tr><td>Shift</td><td>{{ shift_name }}</td></tr>
+                <tr><td>Expected Value</td>
+                    <td>{{ retrieved_data[0].expected_value }} ± {{ retrieved_data[0].tolerance_value }}</td></tr>
+                <tr><td>Actual Value</td><td>{{ measurement_value }}</td></tr>
+            </tbody>
+        </table>
+
+        {% if is_ok %}
+            <h3 class="ok">✅ Product is OK</h3>
+        {% else %}
+            <h3 class="nok">❌ Product is NOK</h3>
+        {% endif %}
+    {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

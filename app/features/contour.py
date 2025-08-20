@@ -81,6 +81,7 @@ def detect_edges_and_dilate(image, blur_kernel=(3, 3), canny_thresh1=50, canny_t
     return contours
 
 
+
     # #retreive the biggest contour determined by area
     # biggest_contour = max(contours, key = cv2.contourArea) 
 

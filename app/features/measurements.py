@@ -47,7 +47,7 @@ def measure_locking_bar(img, mm_per_px_x=0.048531, mm_per_px_y=0.047717):
     binary = detect_binary(img, background="black",  thresh_value=130)
 
     # 2. Find contours
-    contours, hierarchy = cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)   
    
     # 3. Select largest contour
     # biggest_cnt = max(contours, key=cv2.contourArea)
@@ -72,5 +72,4 @@ def measure_locking_bar(img, mm_per_px_x=0.048531, mm_per_px_y=0.047717):
     cv2.drawContours(img, [box.astype(int)], 0, (255, 0, 0), 2)  # Blue min area rect
 
     return img, dimension_mm
-
 

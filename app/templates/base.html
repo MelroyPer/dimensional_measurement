@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<!-- <head runat="server"> -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=1.5;" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+  
+    <title>{% block title %}Autoliv{% endblock %}</title>  
+    <link rel="icon" href="{{ url_for('static', filename='Images/Autoliv_logo_payoff.png') }}" type="image/x-icon" sizes="16x16">
+    
+    <!-- All your CSS links -->
+    <link href="{{ url_for('static', filename='Content/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/dist/DCP.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/model.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/ionicons.min.css') }}" rel="stylesheet">	 
+    <link href="{{ url_for('static', filename='Content/googleapis_fonts.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/jquery-confirm.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/jquery.treeview.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/jquery-ui.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/datatables-bs4/dataTables.bootstrap4.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/datatables-bs4/fixedHeader.bootstrap4.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/datatables-bs4/fixedColumns.bootstrap4.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/DatePicker/daterangepicker.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/DropDownwithCheckbox-Search.css') }}" rel="stylesheet"> 
+    <link href="{{ url_for('static', filename='Content/toastr/toastr.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/select2/select2.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='Content/DatePicker/daterangepicker.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">  -->
+
+    <style type="text/css">
+        .noscroll {
+            position: fixed;
+            overflow-y: scroll
+        }
+
+        .card {
+            box-shadow: none !important;
+        }
+
+        .treeWarp {
+            width: 100%;
+        }
+
+        .confirmationRequired {
+            width: 100%;
+        }
+
+        .Par {
+            width: 90%;
+            white-space: normal !important;
+        }
+
+        .user-info {
+            vertical-align: top;
+            display: inline-block;
+            text-align: left;
+            width: auto;
+            height: 2.5rem;
+        }
+
+        .user-full-name {
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            height: 1.5rem;
+            max-height: 1.5rem;
+            line-height: 1.5rem;
+            font-size: .95rem;
+            padding-left: .5rem;
+            font-weight: 600;
+        }
+
+        user-username {
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            height: 1rem;
+            max-height: 1rem;
+            line-height: .75rem;
+            font-size: .7rem;
+            padding-left: .5rem;
+            font-weight: 300;
+        }
+
+        .file-Response {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .multiselect-container {
+            max-height: 200px; /* Set the desired height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        .environment-indicator {
+            font-size: 1.1em; /* Make icons slightly larger */
+            font-weight: bold;
+        }
+    </style>
+
+    <!-- All your JS includes -->
+    <script src="{{ url_for('static', filename='Scripts/Button/jquery-3.6.0.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/WebForms.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/WebUIValidation.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/MenuStandards.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/Focus.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/GridView.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/DetailsView.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/TreeView.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/FullScreen/FullScreen.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/WebParts.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/MsAjax/MicrosoftAjax.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/MsAjax/MicrosoftAjaxApplicationServices.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/MsAjax/MicrosoftAjaxTimer.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/MsAjax/MicrosoftAjaxWebForms.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/dist/DCP.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/toastr/toastr.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/jquery/jquery-confirm.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/jquery/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/Masking/jquery.inputmask.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/Masking/jquery.inputmask.extensions.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/WebForms/DCPCommon.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/jquery/jquery-migrate-3.0.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/select2/select2.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/datatables-bs4/dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/datatables-bs4/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/datatables-bs4/dataTables.fixedColumns.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/datatables-bs4/dataTables.fixedHeader.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/DatePicker/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/DatePicker/daterangepicker.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/dist/DropDownwithCheckbox-Search.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/PDF/pdf.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/PDF/pdf.worker.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/chart/chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/QR Scanner/html5-qrcode.min.js') }}"></script>
+
+    <script type="text/javascript"> 
+        function preventBackNavigation() {
+            window.history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                window.history.go(1);
+            };
+        }
+        preventBackNavigation();
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {             
+            $('.search').keyup(function () {
+                var text = $(this).val().toLowerCase();
+                $('.content_filter').hide();
+                $('.content_filter').each(function () {
+                    if ($(this).text().toLowerCase().indexOf("" + text + "") != -1) {
+                        $(this).closest('.content_filter').show();
+                    }
+                });
+            });
+        });
+
+        function showprogressVisible() {
+            $('#divPageLoading').show();
+            sessionStorage.setItem('progressVisible', 'true');
+        }
+
+        function hideprogressVisible() {
+            $('#divPageLoading').hide();
+            sessionStorage.removeItem('progressVisible'); // Clear the state
+        }
+    </script>
+    <script type="text/javascript">  
+        $(document.body).ready(function () {
+             
+            $(this).mousemove(function (e) {
+                changeToOnline();
+            });
+
+            $(this).keypress(function (e) {
+                changeToOnline();
+            });
+
+            $(".Print").click(function () {
+                const divContent = $("#DivPrint").html();
+                const newWindow = window.open();
+                newWindow.document.write(divContent);
+                newWindow.print();
+                newWindow.close();
+            }); 
+			
+			$(".select2").select2({
+                placeholder: $(this).attr('placeholder'),
+                allowClear: Boolean($(this).data('allow-clear'))
+            });
+
+            $('.multiselect').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                filterPlaceholder: 'Search',
+                enableCaseInsensitiveFiltering: true
+            });
+        });    
+
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-full-width",
+            "onclick": null,
+            "showDuration": "400",
+            "hideDuration": "1500",
+            "timeOut": "6000",
+            "extendedTimeOut": "1200",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        function ErroralertJS(Message) {
+            if (Message == null || Message == "") {
+                Message = "Something went wrong, Please try again!.";
+            }
+            $.alert({
+                title: 'Encountered an error!.',
+                icon: 'fa fa-window-close',
+                content: Message,
+                type: 'red',
+                typeAnimated: true,
+                columnClass: 'col-lg-6',
+                draggable: true,
+                closeIconClass: 'fa fa-times',
+                animationSpeed: 600
+            });
+        }
+
+        function InfoalertJS(Message) {
+            $.alert({
+                title: 'Info!.',
+                icon: 'fa fa-info-circle',
+                content: Message,
+                type: 'blue',
+                typeAnimated: true,
+                columnClass: 'col-lg-6',
+                draggable: true,
+                closeIconClass: 'fa fa-times',
+                animationSpeed: 600
+            });
+        }
+
+        function WarningalertJS_AutoClose(Message) {
+            $.alert({
+                title: 'Warning!.',
+                icon: 'fa fa-exclamation-triangle',
+                content: Message,
+                type: 'orange',
+                typeAnimated: true,
+                columnClass: 'col-lg-6',
+                draggable: true,
+                closeIconClass: 'fa fa-times',
+                animationSpeed: 600,
+                autoClose: 'cancel',
+                closeTime: 5000,
+                withTime: false,
+                minTop: 10, 
+                isOnly: true
+            });
+        }
+
+        function WarningalertJS(Message) {
+            $.alert({
+                title: 'Warning!.',
+                icon: 'fa fa-exclamation-triangle',
+                content: Message,
+                type: 'orange',
+                typeAnimated: true,
+                columnClass: 'col-lg-6',
+                draggable: true,
+                closeIconClass: 'fa fa-times',
+                animationSpeed: 600
+            });
+        }
+
+        function SuccessalertJS(Message) {
+            $.alert({
+                title: 'Success!.',
+                icon: 'fa fa-check-square',
+                content: Message,
+                type: 'green',
+                typeAnimated: true,
+                columnClass: 'col-lg-6',
+                draggable: true,
+                closeIconClass: 'fa fa-times',
+                animationSpeed: 600
+            });
+        }
+
+        function Success_RedirectalertJS(Message, URL) {
+            $.alert({
+                title: 'Success!.',
+                icon: 'fa fa-check-square',
+                content: Message,
+                type: 'green',
+                typeAnimated: true,
+                columnClass: 'col-lg-6',
+                draggable: true,
+                closeIconClass: 'fa fa-times',
+                animationSpeed: 600,
+                buttons: {
+                    OK: {
+                        text: 'OK',
+                        action: function () {
+                            window.location.href = URL;
+                        }
+                    }
+                }
+            });
+        }  
+    </script>  
+
+</head> 
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed  layout-navbar-fixed sidebar-collapse MainheaderBody" id="MainheaderBody" runat="server">
+    <form id="form1" runat="server">
+        <div class="wrapper">
+
+            <!-- Navbar -->
+            <nav class="main-header navbar navbar-expand bg-primary " id="HeaderNavDiv">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu"><i class="fas fa-bars white-icon"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a class="nav-link text-uppercase">Application Name</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block ms-3 environment-indicator"> 
+                        <span class="btn btn-sm" id="AppVersion"></span>
+                    </li>
+                </ul>
+                 <ul class="navbar-nav ml-auto">                     
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="fullscreen" id="fullscreen-button" href="#" role="button">
+                            <i class="fas fa-expand-arrows-alt white-icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Sidebar -->
+            <aside class="main-sidebar  leftsideNavbar">
+                <a class="brand-link" href="#" style="background-color: #005496 !important;"><img alt="Autoliv Logo" class="brand-image img-circle img-fluid elevation-3" src="{{ url_for('static', filename='Images/auoliv_logo.png') }}" style="opacity: .9"></a>
+                <div class="sidebar">
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="{{ url_for('static', filename='Images/avatar-blank.jpg') }}" class="Profileimg-circle" alt="User Image">
+                        </div>
+                        <div class="info text-wrap" style="width: 15rem;">
+                            <Label ID="lblUserName" CssClass="hideSideBarData" Font-Size="Small"></asp:Label>
+                        </div>
+                    </div>
+                    <input class="form-control hideSideBarData  form-control-sidebar search" type="search" id="search" placeholder="Search" aria-label="Search">
+                    
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column treeWarp nav-collapse-hide-child nav-child-indent" style="font-size: 15px; color: black;" data-widget="treeview" role="menu" data-accordion="false">
+                            <li class="nav-header">MAIN NAVIAGTION</li>
+                            
+                            <li class="nav-item treeWarp heightlistNavItem">
+                                <a href="{{ url_for('dimensional_inspection') }}" style="cursor: pointer;" class="nav-link" title="User Login page">
+                                    <i class="faIcon nav-icon fas fa-solid fa-sign-in-alt"></i>
+                                    <p style="color: #005496 !important;">
+                                       Dimensional Inspection 
+                                    </p>
+                                </a>
+                            </li>                            
+                            <li class="nav-header">Version: 01.11</li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+            
+            <!-- Main Content -->
+            <div class="content-wrapper text-sm" id="MainDivTable"> 
+                {% block content %}{%endblock %}
+            </div>
+
+			<!-- <div class="jumbotron" style="height: 100%;">
+        <div align="center">
+            <img src="{{ url_for('static', filename='Images/Autoliv_logo_payoff.png') }}" style="width: 400px;">
+        </div>
+        <div align="center">
+            <span style="border-color: #fff; color: #005496; border-radius: 0px; border-style: solid; border-width: 0px; font-size: 35px; font-weight: bold;">Welcome To Digitally Controlled Production Lines
+            </span>
+        </div>
+    </div>
+                <div style="padding: 10px;"></div>
+                <div id="divPageLoading" class="modal progressBar" style="display: none;" runat="server">
+                    <img src="{{ url_for('static', filename='Images/loading.gif') }}">
+
+                </div> -->
+            <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+    </form>
+</body> 
+</html>
